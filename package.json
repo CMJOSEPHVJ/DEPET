@@ -1,0 +1,42 @@
+{
+  "name": "win7-bunny-desktop-pet",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline transparent desktop pet for Windows 7 64-bit",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:win7": "electron-builder --win portable --x64",
+    "build:installer": "electron-builder --win nsis --x64"
+  },
+  "devDependencies": {
+    "electron": "22.3.27",
+    "electron-builder": "24.13.3"
+  },
+  "build": {
+    "appId": "com.desktop.bunnypet.win7",
+    "productName": "Bunny Desktop Pet",
+    "asar": true,
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "index.html",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "Bunny-Desktop-Pet-Win7-x64.${ext}"
+    }
+  }
+}

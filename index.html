@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini Desktop Pet</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; width: 100vw; height: 100vh; overflow: hidden; background: transparent; font-family: Arial, sans-serif; user-select: none; }
+    #pet { position: absolute; left: 65px; top: 70px; width: 120px; height: 130px; cursor: grab; touch-action: none; filter: drop-shadow(0 8px 8px #0002); }
+    #pet:active { cursor: grabbing; }
+    .ear { position: absolute; width: 34px; height: 53px; top: 3px; background: #ffb7d7; border: 6px solid #fff; border-radius: 50% 50% 35% 35%; z-index: 0; }
+    .ear.left { left: 16px; transform: rotate(-20deg); }
+    .ear.right { right: 16px; transform: rotate(20deg); }
+    .face { position: absolute; left: 6px; top: 33px; width: 108px; height: 94px; border-radius: 49% 49% 45% 45%; background: #fff; border: 2px solid #f4e8ef; z-index: 1; }
+    .eye { position: absolute; width: 10px; height: 14px; top: 40px; border-radius: 50%; background: #363046; animation: blink 5s infinite; }
+    .eye.left { left: 30px; } .eye.right { right: 30px; }
+    .nose { position: absolute; top: 55px; left: 49px; width: 9px; height: 7px; background: #ed92ba; border-radius: 50%; }
+    .blush { position: absolute; width: 19px; height: 9px; top: 57px; background: #ffc3d9; border-radius: 50%; opacity: .75; }
+    .blush.left { left: 13px; } .blush.right { right: 13px; }
+    .mouth { position: absolute; left: 49px; top: 64px; font-size: 14px; color: #a26381; }
+    #bubble { position: absolute; top: -34px; left: 80px; white-space: nowrap; background: #fff; padding: 7px 12px; border-radius: 14px; box-shadow: 0 3px 12px #0002; font-size: 13px; display: none; pointer-events: none; }
+    .hop { animation: hop .35s ease; }
+    @keyframes hop { 50% { transform: translateY(-18px); } }
+    @keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+    #hint { position: fixed; left: 12px; bottom: 12px; color: #666; background: #ffffffdd; padding: 7px 10px; border-radius: 10px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div id="pet" title="Drag or click me!">
+    <div class="ear left"></div><div class="ear right"></div>
+    <div class="face">
+      <div class="eye left"></div><div class="eye right"></div>
+      <div class="blush left"></div><div class="blush right"></div>
+      <div class="nose"></div><div class="mouth">ᴗ</div>
+    </div>
+    <div id="bubble">Hello! 🐰</div>
+  </div>
+
+  <script src="renderer.js"></script>
+  <script>
+    const pet = document.getElementById('pet');
+    const bubble = document.getElementById('bubble');
+    let dragging = false, moved = false, offsetX = 0, offsetY = 0, bubbleTimer;
+    const messages = ['Hello! 🐰', 'You are awesome! 💖', 'Feed me carrots! 🥕', 'Boop! ✨', 'Have a nice day! 🌸'];
+    function say(message) {
+      bubble.textContent = message;
+      bubble.style.display = 'block';
+      clearTimeout(bubbleTimer);
+      bubbleTimer = setTimeout(() => bubble.style.display = 'none', 1800);
+    }
+    pet.addEventListener('pointerdown', e => {
+      if (e.button !== 0) return;
+      dragging = true; moved = false;
+      offsetX = e.screenX; offsetY = e.screenY;
+      pet.setPointerCapture(e.pointerId);
+    });
+    pet.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const dx = e.screenX - offsetX;
+      const dy = e.screenY - offsetY;
+      if (Math.abs(dx) + Math.abs(dy) < 2) return;
+      moved = true;
+      window.desktopPet.moveBy(dx, dy);
+    });
+    pet.addEventListener('pointerup', () => {
+      dragging = false;
+      if (!moved) {
+        pet.classList.remove('hop'); void pet.offsetWidth; pet.classList.add('hop');
+        say(messages[Math.floor(Math.random() * messages.length)]);
+      }
+    });
+    pet.addEventListener('pointercancel', () => { dragging = false; });
+    setInterval(() => {
+      if (dragging) return;
+      const current = parseFloat(pet.style.left) || 65;
+      const step = (Math.random() - .5) * 28;
+      pet.style.transition = 'left 1s ease-in-out';
+      pet.style.left = Math.max(0, Math.min(innerWidth - pet.offsetWidth, current + step)) + 'px';
+      setTimeout(() => pet.style.transition = '', 1000);
+    }, 3500);
+  </script>
+</body>
+</html>
