@@ -1,27 +1,27 @@
-BUNNY DESKTOP PET - WINDOWS 7 64 BIT
-===================================
-This is source code, not a prebuilt EXE. The app is fully offline when running.
+BUNNY ASSISTANT — WINDOWS 7 64-BIT
 
-EASIEST WAY TO GET AN EXE (BUILD ONLINE USING GITHUB):
-1. Create a new public or private GitHub repository.
-2. Upload ALL files and the .github/workflows/build.yml folder (retain folder structure).
-   Tip: unpack the ZIP and upload the files through GitHub or git.
-3. On GitHub open Actions > Build Windows 7 Pet EXE > Run workflow.
-4. Once the build succeeds, download the Bunny-Desktop-Pet-Win7-x64 artifact.
-5. Unzip the artifact and run Bunny-Desktop-Pet-Win7-x64.exe on Windows 7 x64.
+Offline command assistant. Not a cloud AI model. Commands are limited to approved apps and websites.
 
-BUILD ON A WINDOWS PC:
-Install a compatible Node.js version (Node.js 18 is used in the GitHub build).
-Open the project folder and run BUILD-WIN7.bat (requires internet to download build dependencies).
-The finished EXE is in the dist folder. Building on newer Windows using GitHub
-is recommended because modern toolchains often no longer run on Windows 7.
+Type commands:
+  open chrome
+  open notepad
+  open calculator
+  open paint
+  open files
+  open youtube
+  open google
+  open gmail
+  help
 
-CONTROLS:
-- Left-click bunny = jump/talk
-- Hold left mouse button and drag bunny = move desktop pet
-- Right-click pet window = menu > Quit Desktop Pet
-- Pet stays on top of other windows
+HOW TO BUILD ON GITHUB:
+1. In your GitHub repo, replace index.html, renderer.js, preload.js, main.js, package.json with the files from this ZIP.
+2. Upload .github/workflows/build.yml into its exact FOLDER PATH (not the root directory).
+   GitHub web UI alternative: Add file > Create new file > .github/workflows/build.yml > paste YAML text > Commit changes.
+3. Actions > Build Bunny AI Assistant Win7 EXE > Run workflow.
+4. Download the Bunny-AI-Assistant-Win7-x64 artifact ZIP from the successful workflow run.
+5. Extract the .exe and open it on Windows 7 64-bit.
 
-NOTE: Windows 7 and Electron 22 are both unsupported and receive no security patches.
-Use this simple app offline and avoid adding untrusted web content.
-Electron 22 is the last major release compatible with Windows 7.
+WARNING: Electron 22 is end-of-life and should not be used for browsing untrusted content. This app only loads local HTML and opens approved websites in the system browser.
+
+Chrome must be installed to use the 'open chrome' command.
+This project was not compiled or tested on a physical Windows 7 computer.

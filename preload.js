@@ -1,2 +1,7 @@
-const { contextBridge, ipcRenderer } = require('electron');
-contextBridge.exposeInMainWorld('desktopPet', { moveBy: (x, y) => { if (Number.isFinite(x) && Number.isFinite(y)) ipcRenderer.send('pet-move', x, y); } });
+const {contextBridge,ipcRenderer}=require('electron');
+contextBridge.exposeInMainWorld('bunnyAPI',Object.freeze({
+ command:(text)=>ipcRenderer.invoke('assistant-command',text),
+ move:(dx,dy)=>ipcRenderer.send('assistant-move',dx,dy),
+ minimize:()=>ipcRenderer.send('assistant-minimize'),
+ quit:()=>ipcRenderer.send('assistant-quit')
+}));
